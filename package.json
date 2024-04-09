@@ -2,5 +2,8 @@
   "name": "engr-gizmo",
   "version": "0.1.0",
   "main": "index.js",
-  "scripts": {}
+  "scripts": {},
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
 }
