@@ -2,7 +2,9 @@
   "name": "engr-gizmo",
   "version": "0.1.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "http-server -d ./"
+  },
   "dependencies": {
     "http-server": "^14.1.1"
   }
