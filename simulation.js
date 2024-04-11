@@ -12,12 +12,10 @@ export class Subject {
         const tlc = [0.1 * Canvas.CANVAS.width, 0.1 * Canvas.CANVAS.width];
         const sideLengths = [this.mpp * this.width, this.mpp * this.height]
         Canvas.CANVAS.drawRect(tlc, sideLengths);
-        const ctx = Canvas.CANVAS.context;
-        const grad = ctx.createLinearGradient(tlc[0], tlc[1] - 0.4 * sideLengths[1], tlc[0], tlc[1] + 1.4 * sideLengths[1]);
+        const grad = Canvas.CANVAS.context.createLinearGradient(tlc[0], tlc[1] - 0.4 * sideLengths[1], tlc[0], tlc[1] + 1.4 * sideLengths[1]);
         grad.addColorStop(nP + (2/9), "#0000FF");
         grad.addColorStop(nP, "#FF0000");
-        ctx.fillStyle = grad;
-        ctx.fillRect(...tlc, ...sideLengths);
+        Canvas.CANVAS.fillRect(tlc, sideLengths, grad);
     }
     startSim() {
         const start = performance.now();

@@ -52,6 +52,20 @@ export class Canvas {
         }
         ctx.stroke();
     }
+    fillRect(topLeft, sideLengths, fill = "black") {
+        let ver = 0,
+            hor = 0;
+        if (typeof sideLengths === "number") {
+            ver = sideLengths;
+            hor = sideLengths;
+        } else {
+            hor = sideLengths[0];
+            ver = sideLengths[1];
+        }
+        const ctx = this.context;
+        ctx.fillStyle = fill;
+        ctx.fillRect(...topLeft, hor, ver);
+    }
     drawRect(topLeft, sideLengths, stroke = "black", width = 1) {
         let ver = 0,
             hor = 0;
