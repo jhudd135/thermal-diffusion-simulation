@@ -1,65 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insulation Gizmo</title>
     <link rel="stylesheet" type="text/css" href="index.css">
-    <script type="module" src="index.js"></script>
-    <script type="module" src="canvas.js"></script>
     <script type="module">
-        import {init} from "./index.js"
+        import { init } from "./index.js"
         window.onload = () => {
             init();
         };
     </script>
 </head>
+
 <body>
     <h1>Test</h1>
     <main>
         <canvas></canvas>
         <div id="controls">
             <div class="container">
-                Mass Of Material(KG): <input type="number" id="mass" value = 25 placeholder="Mass of Material in KG: ">
-                Specific Heat Capacity(Joules) <input type="number" value = 0.129 id="specific_heat_capacity" placeholder="Specific Heat Capacity: ">
-                Heater Temperature<input type="number" id="heater_temperature" value = 300 placeholder="Heater Temperature: ">
-                Material Starting Temperature<input type="number" value = 20 id="material_starting_temperature" placeholder="Material Starting Temperature: ">
-                Material Height<input type="number" id="material_height" value = 50 placeholder="Material Height: ">
-                Material Width<input type="number" id="material_width" value = 50 placeholder="Material Width: ">
-                Material Length<input type="number" id="material_length" value = 50 placeholder="Material Length: ">
-                Thermal Conductivity<input type="number" id="thermal_conductivity" value = 320 placeholder="Thermal Conductivity: ">
-        
-                <button onclick="calculateTime()">Calculate Total Time</button>
+                Mass Of Material(KG): <input type="number" id="mass" value=25 placeholder="Mass of Material in KG: ">
+                Specific Heat Capacity(Joules) <input type="number" value=0.129 id="specific_heat_capacity"
+                    placeholder="Specific Heat Capacity: ">
+                Heater Temperature<input type="number" id="heater_temperature" value=300
+                    placeholder="Heater Temperature: ">
+                Material Starting Temperature<input type="number" value=20 id="material_starting_temperature"
+                    placeholder="Material Starting Temperature: ">
+                Material Height<input type="number" id="material_height" value=50 placeholder="Material Height: ">
+                Material Width<input type="number" id="material_width" value=50 placeholder="Material Width: ">
+                Material Length<input type="number" id="material_length" value=50 placeholder="Material Length: ">
+                Thermal Conductivity<input type="number" id="thermal_conductivity" value=320
+                    placeholder="Thermal Conductivity: ">
+
+                <button id="calculateButton">Calculate Total Time</button>
                 <div id="result"></div>
+                <button id="startButton">Start Simulation</button>
             </div>
-            
-            <script>
-                function calculateTime() {
-                
-                    var mass = parseFloat(document.getElementById("mass").value);
-                    var specific_heat_capacity = parseFloat(document.getElementById("specific_heat_capacity").value);
-                    var heater_temperature = parseFloat(document.getElementById("heater_temperature").value);
-                    var material_starting_temperature = parseFloat(document.getElementById("material_starting_temperature").value);
-                    var material_height = parseFloat(document.getElementById("material_height").value);
-                    var material_width = parseFloat(document.getElementById("material_width").value);
-                    var material_length = parseFloat(document.getElementById("material_length").value);
-                    var thermal_conductivity = parseFloat(document.getElementById("thermal_conductivity").value);
-                
-                    if (!isNaN(mass) && !isNaN(specific_heat_capacity) && !isNaN(heater_temperature) && !isNaN(material_starting_temperature) && !isNaN(material_height) && !isNaN(material_width) && !isNaN(material_length) && !isNaN(thermal_conductivity)) {
-                        var totalTime = 40* ((mass * specific_heat_capacity * (heater_temperature - material_starting_temperature))/(thermal_conductivity*((heater_temperature - material_starting_temperature)/material_length)));
-                        document.getElementById("result").innerText = "Total time for all tasks: " + totalTime + " seconds";
-                    } else {
-                        document.getElementById("result").innerText = "Please enter valid numbers for all tasks.";
-                    }
-                }
-            </script>
-            </body>
-            </html>    <button onclick="calculateTime()">Calculate Total Time</button>
-            <div id="result"></div>
+
         </div>
-        
-        </div>
-        
     </main>
 </body>
+
 </html>
