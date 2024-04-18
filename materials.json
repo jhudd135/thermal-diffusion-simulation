@@ -1,0 +1,7 @@
+{
+    "materials": {
+        "gold": {"diffusivity": 127},
+        "aluminum": {"diffusivity": 97},
+        "iron": {"diffusivity": 23}
+    }
+}
