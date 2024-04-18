@@ -26,7 +26,7 @@ export function controlsInit() {
     const start = document.getElementById("startButton");
     start.onclick = () => {
         const result = calculateTime();
-        const subject = createSubject(result.w, result.h, result.t);
+        const subject = createSubject(result.t);
         subject.startSim();
     };
 }
