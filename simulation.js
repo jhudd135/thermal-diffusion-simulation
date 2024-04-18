@@ -25,9 +25,8 @@ function interpolateRGB(min, max, n) {
 }
 
 export class Subject {
-    constructor(duration) {
-        this.duration = duration;
-        this.sim = new Sim(127);
+    constructor(width, length, diffusivity, initialTemperature, heaterTemperature) {
+        this.sim = new Sim(width, length, diffusivity, initialTemperature, heaterTemperature);
         this.sim.init();
     }
     get mpp() {return Canvas.CANVAS.width * 0.8 / this.sim.width;}
@@ -43,7 +42,7 @@ export class Subject {
 
         for (let i = 0; i < this.sim.lnodes; i++) {
             for (let j = 0; j < this.sim.wnodes; j++) {
-                const rgb = interpolateRGB("#0000FF", "#FF0000", (this.sim.nTM[i][j] - this.sim.minimum) / (this.sim.maximum - this.sim.minimum));
+                const rgb = interpolateRGB("#0000FF", "#FF0000", (this.sim.nTM[i][j] - this.sim.initT) / (this.sim.heaterT - this.sim.initT));
                 Canvas.CANVAS.fillRect([tlc[0] + j * nodeSideLengths[0], tlc[1] + i * nodeSideLengths[1]], nodeSideLengths, rgb);
             }
         }
@@ -52,17 +51,18 @@ export class Subject {
         const start = performance.now();
         const interval = setInterval(() => {
             const delta = (performance.now() - start) / 1000;
-            this.sim.sim(delta)
+            this.sim.sim(delta);
+            if (this.sim.equilibrium) {
+                console.log("TOTAL TIME ELAPSED", delta);
+                clearInterval(interval);
+            }
             this.draw();
         }, 1000/10);
-        setTimeout(() => {
-            clearInterval(interval);
-        }, this.duration * 1000 - 20);
     }
 }
 
-export function createSubject(width, height, duration) {
-    const subject = new Subject(width, height, duration);
+export function createSubject(width, length, diffusivity, initialTemperature, heaterTemperature) {
+    const subject = new Subject(width, length, diffusivity, initialTemperature, heaterTemperature);
     subject.draw(0);
     return subject;
 }

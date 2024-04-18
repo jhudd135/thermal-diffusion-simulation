@@ -3,11 +3,7 @@ import { createSubject } from "./simulation.js";
 function calculateTime() {
     let mass = parseFloat(document.getElementById("mass").value);
     let specific_heat_capacity = parseFloat(document.getElementById("specific_heat_capacity").value);
-    let heater_temperature = parseFloat(document.getElementById("heater_temperature").value);
-    let material_starting_temperature = parseFloat(document.getElementById("material_starting_temperature").value);
-    let material_height = parseFloat(document.getElementById("material_height").value);
-    let material_width = parseFloat(document.getElementById("material_width").value);
-    let material_length = parseFloat(document.getElementById("material_length").value);
+    
     let thermal_conductivity = parseFloat(document.getElementById("thermal_conductivity").value);
 
     if (!isNaN(mass) && !isNaN(specific_heat_capacity) && !isNaN(heater_temperature) && !isNaN(material_starting_temperature) && !isNaN(material_height) && !isNaN(material_width) && !isNaN(material_length) && !isNaN(thermal_conductivity)) {
@@ -25,8 +21,15 @@ export function controlsInit() {
 
     const start = document.getElementById("startButton");
     start.onclick = () => {
-        const result = calculateTime();
-        const subject = createSubject(result.t);
+        const heater_temperature = parseFloat(document.getElementById("heater_temperature").value);
+        const material_starting_temperature = parseFloat(document.getElementById("material_starting_temperature").value);
+        const material_width = parseFloat(document.getElementById("material_width").value);
+        const material_length = parseFloat(document.getElementById("material_length").value);
+        const thermal_diffusivity = parseFloat(document.getElementById("thermal_diffusivity").value);
+
+        const result = {ht: heater_temperature, mst: material_starting_temperature, w: material_width, l: material_length, td: thermal_diffusivity}
+        
+        const subject = createSubject(result.w, result.l, result.td, result.mst, result.ht);
         subject.startSim();
     };
 }
