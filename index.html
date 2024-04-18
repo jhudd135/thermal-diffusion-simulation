@@ -20,26 +20,58 @@
         <canvas></canvas>
         <div id="controls">
             <div class="container">
-                Mass Of Material(KG): <input type="number" id="mass" value=25 placeholder="Mass of Material in KG: ">
-                Specific Heat Capacity(Joules) <input type="number" value=0.129 id="specific_heat_capacity"
+                Material Of Study
+                <select id="materialSelect" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box;">
+                    <option value="copper">Copper</option>
+                    <option value="aluminum">Aluminum</option>
+                    <option value="steel">Steel</option>
+                    <!-- Add more options for different materials as needed -->
+                </select>
+                <!-- Mass Of Material(KG): <input type="number" id="mass" value=25 placeholder="Mass of Material in KG: "> -->
+                Thermal Diffusivity <input type="number" value=0.129 id="thermal_diffusivity"
                     placeholder="Specific Heat Capacity: ">
                 Heater Temperature<input type="number" id="heater_temperature" value=300
                     placeholder="Heater Temperature: ">
                 Material Starting Temperature<input type="number" value=20 id="material_starting_temperature"
                     placeholder="Material Starting Temperature: ">
-                Material Height<input type="number" id="material_height" value=50 placeholder="Material Height: ">
                 Material Width<input type="number" id="material_width" value=50 placeholder="Material Width: ">
                 Material Length<input type="number" id="material_length" value=50 placeholder="Material Length: ">
-                Thermal Conductivity<input type="number" id="thermal_conductivity" value=320
-                    placeholder="Thermal Conductivity: ">
 
-                <button id="calculateButton">Calculate Total Time</button>
-                <div id="result"></div>
+                <!-- <button id="calculateButton">Calculate Total Time</button>
+                <div id="result"></div> -->
                 <button id="startButton">Start Simulation</button>
             </div>
 
         </div>
+
     </main>
+    <script>
+        function updateThermalDiffusivity() {
+            var materialSelect = document.getElementById("materialSelect");
+            var thermalDiffusivityInput = document.getElementById("thermal_diffusivity");
+
+            var selectedMaterial = materialSelect.value;
+
+            // Assign thermal diffusivity based on selected material
+            switch (selectedMaterial) {
+                case "copper":
+                    thermalDiffusivityInput.value = 0.1; // Thermal diffusivity for copper
+                    break;
+                case "aluminum":
+                    thermalDiffusivityInput.value = 0.3; // Thermal diffusivity for aluminum
+                    break;
+                case "steel":
+                    thermalDiffusivityInput.value = 0.6; // Thermal diffusivity for steel
+                    break;
+                // Add cases for more materials as needed
+                default:
+                    thermalDiffusivityInput.value = ""; // Default value if material not found
+            }
+            alert(thermalDiffusivityInput.value); // For testing purposes
+        }
+
+        document.getElementById("materialSelect").addEventListener("change", updateThermalDiffusivity);
+    </script>
 </body>
 
 </html>
