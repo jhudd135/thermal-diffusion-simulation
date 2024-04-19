@@ -1,5 +1,6 @@
 import { Canvas } from "./canvas.js";
 import { setClock } from "./clock.js";
+import { callE, simulationEquilibrium } from "./events.js";
 import { Sim } from "./fea.js";
 
 function interpolate(a, b, n) { // min, max, normal
@@ -56,14 +57,13 @@ export class Subject {
             this.draw();
             setClock(this.sim.time);
             if (this.sim.equilibrium) {
-                console.log("Equilibrium Reached", delta);
                 this.stopSim();
+                callE(simulationEquilibrium);
             }
         }, 1000/10);
         this.interval = interval;
     }
     stopSim() {
-        console.log("Sim Stopped", this.sim.time);
         clearInterval(this.interval);
     }
 }

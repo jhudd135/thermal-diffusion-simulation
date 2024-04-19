@@ -1,6 +1,7 @@
 import { createSubject } from "./simulation.js";
 import materialJSON from "./materials.json" with {type: "json"};
 import { setClock } from "./clock.js";
+import { callE, controlsPause, controlsPlay, registerE, simulationEquilibrium } from "./events.js";
 
 export function controlsInit() {
 
@@ -30,14 +31,7 @@ export function controlsInit() {
     
     let subject;
 
-    const start_s_f = () => {
-        subject.startSim();
-        toggleSim.innerText = "Pause Simulation";
-    }
-    const stop_s_f = () => {
-        subject.stopSim();
-        toggleSim.innerText = "Play Simulation";
-    }
+    
     setSim.onclick = () => {
         const result = {
             ht: parseFloat(heater_temperature.value), 
@@ -46,19 +40,35 @@ export function controlsInit() {
             l: parseFloat(material_length.value), 
             td: parseFloat(thermal_diffusivity.value)
         };
-        if (subject) {stop_s_f();}
+        if (subject) {callE(controlsPause);}
         subject = createSubject(result.w, result.l, result.td, result.mst, result.ht);
         setClock(0);
     };
 
-    const simRunning = () => toggleSim.innerText == "Pause Simulation";
     toggleSim.onclick = () => {
-        if (!simRunning()) {
-            start_s_f();
-        } else {
-            stop_s_f();
+        if (toggleSim.innerText == "Play Simulation") {
+            callE(controlsPlay);
+        } else if (toggleSim.innerText == "Pause Simulation") {
+            callE(controlsPause);
+        } else if (toggleSim.innerText == "Restart Simulation") {
+            setSim.onclick();
         }
     };
 
+    registerE(controlsPlay, "playSimulation", () => {
+        subject.startSim();
+        toggleSim.innerText = "Pause Simulation";
+        toggleSim.style.backgroundColor = "#0000FF";
+    });
+    registerE(controlsPause, "pauseSimulation", () => {
+        subject.stopSim();
+        toggleSim.innerText = "Play Simulation";
+        toggleSim.style.backgroundColor = "#00FF00";
+    });
+
+    registerE(simulationEquilibrium, "setToggleButton", () => {
+        toggleSim.innerText = "Restart Simulation";
+        toggleSim.style.backgroundColor = "#FF0000";
+    });
 
 }
