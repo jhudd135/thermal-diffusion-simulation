@@ -30,16 +30,17 @@ export class Subject {
     constructor(width, length, diffusivity, initialTemperature, heaterTemperature) {
         this.sim = new Sim(width, length, diffusivity, initialTemperature, heaterTemperature);
         this.sim.init();
+
+        this.tlc = [0.1 * Canvas.CANVAS.width, 0.1 * Canvas.CANVAS.width];
+        this.sl = [this.mpp * this.sim.dx, this.mpp * this.sim.dy];
+        this.tM = this.sim.nTM.map((r, i) => r.map((c, j) => new Tile([this.tlc[0] + j * this.sl[0], this.tlc[1] + i * this.sl[1]], this.sl)));
     }
     get mpp() {return Canvas.CANVAS.width * 0.8 / this.sim.width;}
     draw() {
-        const tlc = [0.1 * Canvas.CANVAS.width, 0.1 * Canvas.CANVAS.width];
-        const nodeSideLengths = [this.mpp * this.sim.dx, this.mpp * this.sim.dy]
-
-        for (let i = 0; i < this.sim.lnodes; i++) {
-            for (let j = 0; j < this.sim.wnodes; j++) {
+        for (let i = 0; i < this.tM.length; i++) {
+            for (let j = 0; j < this.tM[i].length; j++) {
                 const rgb = interpolateRGB("#0000FF", "#FF0000", (this.sim.nTM[i][j] - this.sim.initT) / (this.sim.heaterT - this.sim.initT));
-                Canvas.CANVAS.fillRect([tlc[0] + j * nodeSideLengths[0], tlc[1] + i * nodeSideLengths[1]], nodeSideLengths, rgb);
+                this.tM[i][j].fillT(rgb);
             }
         }
     }
@@ -59,6 +60,28 @@ export class Subject {
     }
     stopSim() {
         clearInterval(this.interval);
+    }
+    getNodeTemp(j, i) {
+        return this.sim.nTM[i][j];
+    }
+    getTile(pos) {
+        const x = pos[0];
+        const y = pos[1];
+        const brc = [this.tlc[0] + this.sl[0] * this.sim.wnodes, this.tlc[1] + this.sl[1] * this.sim.lnodes];
+        if (this.tlc[0] < x && x < brc[0] && this.tlc[1] < y && y < brc[1]) {
+            return [Math.floor((x - this.tlc[0]) / this.sl[0]), Math.floor((y - this.tlc[1]) / this.sl[1])];
+        }
+        return null;
+    }
+}
+
+class Tile {
+    constructor(tlc, sl) {
+        this.tlc = tlc;
+        this.sl = sl;
+    }
+    fillT(color) {
+        Canvas.CANVAS.fillRect(this.tlc, this.sl, color);
     }
 }
 

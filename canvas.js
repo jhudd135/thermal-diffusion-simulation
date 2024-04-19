@@ -1,3 +1,5 @@
+import { mouseScreenPos } from "./mouse.js";
+
 /** Encapsulates HTMLCanvasElement. */
 export class Canvas {
     get context() {
@@ -105,6 +107,11 @@ export class Canvas {
     }
     borderCanvas() {
         this.drawRect([0, 0], [this.width, this.height], "black", 2);
+    }
+    getMousePos() {
+        const rect = this.canvas.getBoundingClientRect();
+        const pos = [mouseScreenPos[0] - rect.left, mouseScreenPos[1] - rect.top];
+        return 0 < pos[0] && pos[0] < this.width && 0 < pos[1] && pos[1] < this.height ? pos : null;
     }
     static CANVAS;
 }

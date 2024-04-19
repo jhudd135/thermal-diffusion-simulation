@@ -3,6 +3,7 @@ import materialJSON from "./materials.json" with {type: "json"};
 import { setClock } from "./clock.js";
 import { callE, controlsPause, controlsPlay, registerE, simulationEquilibrium } from "./events.js";
 
+export let subject;
 export function controlsInit() {
 
     const materialSelect = document.getElementById("materialSelect");
@@ -28,9 +29,6 @@ export function controlsInit() {
     materialSelect.onchange = () => {
         thermal_diffusivity.value = materialJSON.materials[materialSelect.value].diffusivity;
     }
-    
-    let subject;
-
     
     setSim.onclick = () => {
         const result = {
