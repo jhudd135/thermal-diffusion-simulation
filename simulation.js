@@ -33,14 +33,8 @@ export class Subject {
     }
     get mpp() {return Canvas.CANVAS.width * 0.8 / this.sim.width;}
     draw() {
-        // const nP = (7/9) * t / this.duration;
         const tlc = [0.1 * Canvas.CANVAS.width, 0.1 * Canvas.CANVAS.width];
         const nodeSideLengths = [this.mpp * this.sim.dx, this.mpp * this.sim.dy]
-        // Canvas.CANVAS.drawRect(tlc, sideLengths);
-        // const grad = Canvas.CANVAS.context.createLinearGradient(tlc[0], tlc[1] - 0.4 * sideLengths[1], tlc[0], tlc[1] + 1.4 * sideLengths[1]);
-        // grad.addColorStop(nP + (2/9), "#0000FF");
-        // grad.addColorStop(nP, "#FF0000");
-        // Canvas.CANVAS.fillRect(tlc, sideLengths, grad);
 
         for (let i = 0; i < this.sim.lnodes; i++) {
             for (let j = 0; j < this.sim.wnodes; j++) {
