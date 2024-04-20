@@ -17,7 +17,7 @@
 <body>
     <h1>Thermal Conduction</h1>
     <main>
-        <canvas></canvas>
+        <canvas id="display"></canvas>
         <div id="controls">
             <h2>Controls</h2>
             <div class="centerer"><button id="toggleSimButton">Play Simulation</button> <div>Time Elapsed: <input type="number" id="clock" readonly></div></div>
@@ -38,6 +38,9 @@
                 <div class="centerer"><button id="setSimButton">Update Properties and Reset Simulation</button></div>
                 
             </div>
+            <h2>Temperature Graph</h2>
+            <h3>Temerature (°C) / Time (s)</h3>
+            <canvas id="graph"></canvas>
             <div>Temperature of selected node: <input type="number" id="tempDisplay" readonly>°C</div>
         </div>
         

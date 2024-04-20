@@ -116,10 +116,12 @@ export class Canvas {
     static CANVAS;
 }
 
-
-export function canvasInit() {
-    const htmlCanvas = document.getElementsByTagName("canvas")[0];
+export function processCanvas(htmlCanvas) {
     htmlCanvas.width = htmlCanvas.offsetWidth;
     htmlCanvas.height = htmlCanvas.offsetHeight;
-    Canvas.CANVAS = new Canvas(htmlCanvas);
+    return new Canvas(htmlCanvas);
+}
+
+export function canvasInit() {
+    Canvas.CANVAS = processCanvas(document.getElementById("display"));
 }

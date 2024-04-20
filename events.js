@@ -1,7 +1,9 @@
 export const simulationEquilibrium = "simulation_equilibrium";
+export const simulationFrameUpdate = "simulation_frame_update";
+
 export const controlsPlay = "controls_play";
 export const controlsPause = "controls_pause";
-export const simulationFrameUpdate = "simulation_frame_update";
+export const controlsReset = "controls_reset";
 
 const events = {};
 

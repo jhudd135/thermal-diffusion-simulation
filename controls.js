@@ -1,6 +1,6 @@
 import { Subject } from "./simulation.js";
 import materialJSON from "./materials.json" assert {type: "json"};
-import { callE, controlsPause, controlsPlay, registerE, simulationEquilibrium, simulationFrameUpdate } from "./events.js";
+import { callE, controlsPause, controlsPlay, controlsReset, registerE, simulationEquilibrium, simulationFrameUpdate } from "./events.js";
 
 export let subject;
 export function controlsInit() {
@@ -30,16 +30,7 @@ export function controlsInit() {
     }
     
     setSim.onclick = () => {
-        const result = {
-            ht: parseFloat(heater_temperature.value), 
-            mst: parseFloat(material_starting_temperature.value), 
-            w: parseFloat(material_width.value), 
-            l: parseFloat(material_length.value), 
-            td: parseFloat(thermal_diffusivity.value)
-        };
-        if (subject) {callE(controlsPause);}
-        subject = new Subject(result.w, result.l, result.td, result.mst, result.ht);
-        callE(simulationFrameUpdate, {time: 0});
+        callE(controlsReset);
     };
 
     toggleSim.onclick = () => {
@@ -48,7 +39,7 @@ export function controlsInit() {
         } else if (toggleSim.innerText == "Pause Simulation") {
             callE(controlsPause);
         } else if (toggleSim.innerText == "Restart Simulation") {
-            setSim.onclick();
+            callE(controlsReset);
         }
     };
 
@@ -61,6 +52,18 @@ export function controlsInit() {
         subject.stopSim();
         toggleSim.innerText = "Play Simulation";
         toggleSim.style.backgroundColor = "#00FF00";
+    });
+    registerE(controlsReset, "resetSimulation", () => {
+        const result = {
+            ht: parseFloat(heater_temperature.value), 
+            mst: parseFloat(material_starting_temperature.value), 
+            w: parseFloat(material_width.value), 
+            l: parseFloat(material_length.value), 
+            td: parseFloat(thermal_diffusivity.value)
+        };
+        if (subject) {callE(controlsPause);}
+        subject = new Subject(result.w, result.l, result.td, result.mst, result.ht);
+        callE(simulationFrameUpdate, {time: 0});
     });
     registerE(simulationEquilibrium, "setToggleButton", () => {
         toggleSim.innerText = "Restart Simulation";

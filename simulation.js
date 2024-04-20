@@ -1,42 +1,21 @@
 import { Canvas } from "./canvas.js";
 import { callE, registerE, simulationEquilibrium, simulationFrameUpdate } from "./events.js";
 import { Sim } from "./fea.js";
+import { interpolateRGB } from "./rgb.js";
 
-function interpolate(a, b, n) { // min, max, normal
-    return a + (b - a) * n
-}
-function HEXtoRGB(str) {
-    str = str.substring(1)
-    const result = [];
-    for (let i = 0; i < 6; i+=2) {
-        result.push(parseInt(str.substr(i, 2), 16))
-    }
-    return result;
-}
-function RGBtoHEX(rgb) {
-    let result = "#";
-    rgb.forEach(c => {
-        result += Math.floor(c).toString(16).padStart(2, "0");
-    });
-    return result;
-}
-
-function interpolateRGB(min, max, n) {
-    return RGBtoHEX(HEXtoRGB(min).map((c, i) => interpolate(c, HEXtoRGB(max)[i], n)))
-}
 
 export class Subject {
     constructor(width, length, diffusivity, initialTemperature, heaterTemperature) {
         this.sim = new Sim(width, length, diffusivity, initialTemperature, heaterTemperature);
         this.sim.init();
-        
+
         this.tlc = [0.1 * Canvas.CANVAS.width, 0.1 * Canvas.CANVAS.width];
-        this.sl = [this.mpp * this.sim.dx, this.mpp * this.sim.dy];
+        this.sl = [this.ppm * this.sim.dx, this.ppm * this.sim.dy];
         this.tM = this.sim.nTM.map((r, i) => r.map((c, j) => new Tile(i, j)));
 
         registerE(simulationFrameUpdate, "drawCall", () => {this.draw();});
     }
-    get mpp() {return Canvas.CANVAS.width * 0.8 / this.sim.width;}
+    get ppm() {return Canvas.CANVAS.width * 0.8 / this.sim.width;}
     draw() {
         Canvas.CANVAS.cleanCanvas();
         const last = [];
