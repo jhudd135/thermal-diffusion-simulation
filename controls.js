@@ -1,7 +1,6 @@
-import { createSubject } from "./simulation.js";
-import materialJSON from "./materials.json" with {type: "json"};
-import { setClock } from "./clock.js";
-import { callE, controlsPause, controlsPlay, registerE, simulationEquilibrium } from "./events.js";
+import { Subject } from "./simulation.js";
+import materialJSON from "./materials.json" assert {type: "json"};
+import { callE, controlsPause, controlsPlay, registerE, simulationEquilibrium, simulationFrameUpdate } from "./events.js";
 
 export let subject;
 export function controlsInit() {
@@ -39,8 +38,8 @@ export function controlsInit() {
             td: parseFloat(thermal_diffusivity.value)
         };
         if (subject) {callE(controlsPause);}
-        subject = createSubject(result.w, result.l, result.td, result.mst, result.ht);
-        setClock(0);
+        subject = new Subject(result.w, result.l, result.td, result.mst, result.ht);
+        callE(simulationFrameUpdate, {time: 0});
     };
 
     toggleSim.onclick = () => {
@@ -63,10 +62,8 @@ export function controlsInit() {
         toggleSim.innerText = "Play Simulation";
         toggleSim.style.backgroundColor = "#00FF00";
     });
-
     registerE(simulationEquilibrium, "setToggleButton", () => {
         toggleSim.innerText = "Restart Simulation";
         toggleSim.style.backgroundColor = "#FF0000";
     });
-
 }

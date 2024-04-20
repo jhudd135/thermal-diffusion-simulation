@@ -1,8 +1,8 @@
-let clock;
-export function clockInit() {
-    clock = document.getElementById("clock");
-}
+import { registerE, simulationFrameUpdate } from "./events.js";
 
-export function setClock(time) {
-    clock.value = Math.round(time * 100) / 100;
+export function clockInit() {
+    const clock = document.getElementById("clock");
+    registerE(simulationFrameUpdate, "updateClock", (args) => {
+        clock.value = Math.round(args.time * 100) / 100;
+    });
 }
