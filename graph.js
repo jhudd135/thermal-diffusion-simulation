@@ -42,7 +42,7 @@ export function graphInit() {
             GRAPH.drawText([100, 35], "10 °C");
             GRAPH.drawLine([100, 40], [100, 40 + ppd * 10]);
             // axes
-            const timeD = 5;
+            const timeD = Math.max(5, Math.floor(tRange / 10));
             const timeTicks = Math.ceil(tRange / timeD);
             for (let i = 0; i < timeTicks; i++) {
                 const tx = i * timeD * pps;
