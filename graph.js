@@ -36,7 +36,7 @@ export function graphInit() {
             }
             // legend
             GRAPH.drawText([100, 15], "1 second");
-            GRAPH.drawLine([100, 20], [pps + 5, 20]);
+            GRAPH.drawLine([100, 20], [pps + 100, 20]);
             GRAPH.drawText([100, 35], "10 °C");
             GRAPH.drawLine([100, 40], [100, 40 + ppd * 10]);
             // axes
