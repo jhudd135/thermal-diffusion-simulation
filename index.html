@@ -20,7 +20,18 @@
         <canvas id="display"></canvas>
         <div id="controls">
             <h2>Controls</h2>
-            <div class="centerer"><button id="toggleSimButton">Play Simulation</button> <div>Time Elapsed: <input type="number" id="clock" readonly></div></div>
+            <div class="centerer">
+                <button id="toggleSimButton">Play Simulation</button> 
+                <div>Time Elapsed: <input type="number" id="clock" readonly></div>
+                <div>Simulation Speed <select id="simulationSpeed">
+                    <option value="0.5">0.5</option>
+                    <option value="1" selected="selected">1.0</option>
+                    <option value="2">2.0</option>
+                    <option value="4">4.0</option>
+                    <option value="8">8.0</option>
+                </select></div>
+                <button id="simToEnd">Simulate To End</button>
+            </div>
         </div>
         <div id="configuration">
             <h2>Configuration</h2>
@@ -33,7 +44,7 @@
                 
                 Heater type <select id="heater_type">
                     <option value="whole">Whole</option>
-                    <option value="half">Half</option>
+                    <option value="half" selected="selected">Half</option>
                     <option value="center">Center</option>
                 </select>
 

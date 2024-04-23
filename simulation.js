@@ -33,10 +33,11 @@ export class Subject {
             t.borderT(this.tlc, this.sl, "#22FF22");
         })
     }
-    startSim() {
-        const start = performance.now() - this.sim.time * 1000;
+    startSim(speed) {
+        const offset = this.sim.time;
+        const start = performance.now();
         const interval = setInterval(() => {
-            const delta = (performance.now() - start) / 1000;
+            const delta = (performance.now() - start) * speed / 1000 + offset;
             this.sim.sim(delta);
             callE(simulationFrameUpdate, {time: this.sim.time});
             if (this.sim.equilibrium) {
@@ -48,6 +49,12 @@ export class Subject {
     }
     stopSim() {
         clearInterval(this.interval);
+    }
+    finishSim() {
+        this.stopSim();
+        this.sim.sim(0, true);
+        callE(simulationFrameUpdate, {time: this.sim.time});
+        callE(simulationEquilibrium);
     }
     getTileTemp(tile) {
         return this.sim.nTM[tile.i][tile.j];

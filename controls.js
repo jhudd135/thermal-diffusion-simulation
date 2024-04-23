@@ -8,6 +8,8 @@ export function controlsInit() {
     
     const setSim = document.getElementById("setSimButton");
     const toggleSim = document.getElementById("toggleSimButton");
+    const simulationSpeed = document.getElementById("simulationSpeed");
+    const simToEnd = document.getElementById("simToEnd");
 
     const material_select = document.getElementById("material_select");
     const heater_temperature = document.getElementById("heater_temperature");
@@ -30,6 +32,10 @@ export function controlsInit() {
     material_select.onchange = () => {
         thermal_diffusivity.value = materialJSON.materials[material_select.value].diffusivity;
     }
+
+    simulationSpeed.onchange = () => {
+        callE(controlsPause);
+    }
     
     setSim.onclick = () => {
         callE(controlsReset);
@@ -45,8 +51,12 @@ export function controlsInit() {
         }
     };
 
+    simToEnd.onclick = () => {
+        subject.finishSim();
+    }
+
     registerE(controlsPlay, "playSimulation", () => {
-        subject.startSim();
+        subject.startSim(parseFloat(simulationSpeed.value));
         toggleSim.innerText = "Pause Simulation";
         toggleSim.style.backgroundColor = "#0000FF";
     });

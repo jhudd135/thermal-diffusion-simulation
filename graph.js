@@ -1,6 +1,6 @@
 import { subject } from "./controls.js";
 import { Canvas, processCanvas } from "./canvas.js";
-import { callE, registerE, simulationFrameUpdate, controlsReset } from "./events.js";
+import { callE, registerE, simulationFrameUpdate, controlsReset, feaSimUpdate } from "./events.js";
 import { interpolateRGB } from "./rgb.js";
 
 export function graphInit() {
@@ -11,22 +11,24 @@ export function graphInit() {
 
     let dataPoints = [];
 
-    registerE(simulationFrameUpdate, "trackTileTemp", (args) => {
+    registerE(feaSimUpdate, "trackTileTemp", (args) => {
         if (focusTile) {
-            const temp = Math.round(subject.getTileTemp(focusTile) * 100) / 100;
-            tempDisplay.value = temp;
+            const temp = Math.round(args.nTM[focusTile.i][focusTile.j] * 100) / 100;
             if (args.time != 0) {dataPoints.push({t: Math.round(args.time * 100) / 100, v: temp});}
         }
+    });
 
+    registerE(simulationFrameUpdate, "drawGraph", (args) => {
         GRAPH.cleanCanvas();
         if (2 < dataPoints.length) {
-
             const tStart = dataPoints[0].t
             const tEnd = dataPoints[dataPoints.length - 1].t;
             const tRange = tEnd - tStart
             const pps = GRAPH.width / tRange;
             const ppd = GRAPH.height / subject.sim.heaterT;
             
+            tempDisplay.value = tEnd;
+
             // graph
             for (let i = 0; i < dataPoints.length - 1; i++) {
                 const cp = dataPoints[i];

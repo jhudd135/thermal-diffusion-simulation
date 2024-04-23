@@ -5,6 +5,8 @@ export const controlsPlay = "controls_play";
 export const controlsPause = "controls_pause";
 export const controlsReset = "controls_reset";
 
+export const feaSimUpdate = "fea_sim_update";
+
 const events = {};
 
 export function callE(ev, args = null) {

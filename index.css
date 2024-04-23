@@ -49,6 +49,12 @@ body {
     display: flex;
     justify-content: space-around;
 }
+#controls > .centerer {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    gap: 1vw;
+}
 .container input, .container select {
     width: 100%;
     padding: 10px;

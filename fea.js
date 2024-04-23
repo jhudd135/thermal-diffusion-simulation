@@ -1,3 +1,4 @@
+import { callE, feaSimUpdate } from "./events.js";
 
 export class Sim {
     a = 127; // thermal diffusivity of gold
@@ -7,6 +8,8 @@ export class Sim {
     wnodes = 20;
     time = 0; // seconds
     diff = 100; // default number larger than cutoff
+    dataResolution = 0.01; // seconds
+    lastDataReport = 0; // seconds
     constructor(w, l, a, initT, heaterT, maxNodes, heaterType) { // w and l in cm
         this.width = w * 10;
         this.length = l * 10;
@@ -59,9 +62,9 @@ export class Sim {
         if (cp[i].length <= j) {j = cp[i].length - 1;}
         return cp[i][j];
     }
-    sim(t) {
+    sim(t, finish = false) {
         const bG = Sim.boundGet;
-        while (this.time < t) {
+        while ((this.time < t || finish) && !this.equilibrium) {
             let diff = 0;
             const cp = this.nTM.map(r => r.map(v => v));
             for (let i = 0; i < cp.length; i++) {
@@ -79,6 +82,11 @@ export class Sim {
             }
             this.diff = diff;
             this.time += this.dt;
+            if (this.dataResolution < this.time - this.lastDataReport) {
+                callE(feaSimUpdate, {nTM: this.nTM.map(r => r.map(v => v)), time: this.time});
+                this.lastDataReport = this.time;
+            }
+            
         }
     }
     get equilibrium() {
