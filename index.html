@@ -26,14 +26,21 @@
             <h2>Configuration</h2>
             <div class="container">
                 
-                Material Of Study
-                <select id="materialSelect" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box;"></select>  <!-- populated by controls.js from materials.json -->
+                Material Of Study <select id="material_select" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box;"></select>  <!-- populated by controls.js from materials.json -->
                 
                 Thermal Diffusivity (mm²/s) <input type="number" value=0.129 id="thermal_diffusivity" placeholder="Specific Heat Capacity: ">
-                Heater Temperature (°C)<input type="number" id="heater_temperature" value=100 placeholder="Heater Temperature: ">
-                Material Starting Temperature (°C)<input type="number" value=20 id="material_starting_temperature" placeholder="Material Starting Temperature: ">
-                Material Width (cm)<input type="number" id="material_width" value=5 placeholder="Material Width: ">
-                Material Length (cm)<input type="number" id="material_length" value=5 placeholder="Material Length: ">
+                Heater Temperature (°C) <input type="number" id="heater_temperature" value=100 placeholder="Heater Temperature: ">
+                
+                Heater type <select id="heater_type">
+                    <option value="whole">Whole</option>
+                    <option value="half">Half</option>
+                    <option value="center">Center</option>
+                </select>
+
+                Material Starting Temperature (°C) <input type="number" value=20 id="material_starting_temperature" placeholder="Material Starting Temperature: ">
+                Material Width (cm) <input type="number" id="material_width" value=5 placeholder="Material Width: ">
+                Material Length (cm) <input type="number" id="material_length" value=5 placeholder="Material Length: ">
+                
 
                 <div class="centerer"><button id="setSimButton">Update Properties and Reset Simulation</button></div>
                 

@@ -49,7 +49,7 @@ body {
     display: flex;
     justify-content: space-around;
 }
-.container input {
+.container input, .container select {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;

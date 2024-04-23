@@ -7,27 +7,49 @@ export class Sim {
     wnodes = 20;
     time = 0; // seconds
     diff = 100; // default number larger than cutoff
-    constructor(w, l, a, initT, heaterT) { // w and l in cm
+    constructor(w, l, a, initT, heaterT, maxNodes, heaterType) { // w and l in cm
         this.width = w * 10;
         this.length = l * 10;
         this.a = a;
         this.initT = initT;
         this.heaterT = heaterT;
+        this.lnodes = maxNodes;
+        this.wnodes = maxNodes;
+        this.heaterType = heaterType;
     }
     init() {
         //calculate dx, dy, and dt
-        this.dx = this.width / this.wnodes; // mm
+        if (this.length < this.width) { // width is greater, use it to determine node size
+            this.dx = this.width / this.wnodes; // mm
+            this.lnodes = Math.floor(this.length / this.dx); //make square-ish nodes based on 20 nodes wide
+            this.dy = this.length / this.lnodes; // mm
+        } else { // length is greater, use it to determine node size
+            this.dy = this.length / this.lnodes; // mm
+            this.wnodes = Math.floor(this.width / this.dy); //make square-ish nodes based on 20 nodes wide
+            this.dx = this.width / this.wnodes; // mm
+        }
         
-        //make square-ish nodes based on 20 nodes wide
-        this.lnodes = Math.floor(this.length / this.dx)
-
-        this.dy = this.length / this.lnodes; // mm
         this.dt = Math.min(this.dx * this.dx, this.dy * this.dy) / (4 * this.a); // seconds
 
         //initialize matrices
         this.nBM = [...Array(this.lnodes)].map(r => [...Array(this.wnodes)].map(v => false));
-        this.nBM[0] = this.nBM[0].map((v, i) => 7<i && i<13);
-
+        
+        //set heater tiles according to heatertype
+        switch (this.heaterType) {
+            case "whole":
+                this.nBM[0] = this.nBM[0].map((v, i) => true);
+                break;
+            case "half": 
+                const lower = Math.floor(0.25 * this.wnodes);
+                const upper = Math.floor(0.75 * this.wnodes);
+                this.nBM[0] = this.nBM[0].map((v, i) => lower < i && i < upper);
+                break;
+            case "center":
+                this.nBM[0][Math.floor(this.wnodes / 2)] = true;
+                this.nBM[0][Math.floor((this.wnodes - 1) / 2)] = true;
+                break;
+        }
+        
         this.nTM = [...Array(this.lnodes)].map((r, i) => [...Array(this.wnodes)].map((v, j) => this.nBM[i][j] ? this.heaterT : this.initT));
     }
     static boundGet(cp, i, j) {

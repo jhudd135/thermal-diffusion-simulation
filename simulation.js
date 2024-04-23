@@ -5,8 +5,8 @@ import { interpolateRGB } from "./rgb.js";
 
 
 export class Subject {
-    constructor(width, length, diffusivity, initialTemperature, heaterTemperature) {
-        this.sim = new Sim(width, length, diffusivity, initialTemperature, heaterTemperature);
+    constructor(width, length, diffusivity, initialTemperature, heaterTemperature, heaterType) {
+        this.sim = new Sim(width, length, diffusivity, initialTemperature, heaterTemperature, 30, heaterType);
         this.sim.init();
 
         this.tlc = [0.1 * Canvas.CANVAS.width, 0.1 * Canvas.CANVAS.width];
@@ -15,7 +15,7 @@ export class Subject {
 
         registerE(simulationFrameUpdate, "drawCall", () => {this.draw();});
     }
-    get ppm() {return Canvas.CANVAS.width * 0.8 / this.sim.width;}
+    get ppm() {return Math.min(Canvas.CANVAS.width * 0.8 / this.sim.width, Canvas.CANVAS.height * 0.8 / this.sim.length);}
     draw() {
         Canvas.CANVAS.cleanCanvas();
         const last = [];

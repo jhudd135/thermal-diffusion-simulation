@@ -5,28 +5,30 @@ import { callE, controlsPause, controlsPlay, controlsReset, registerE, simulatio
 export let subject;
 export function controlsInit() {
 
-    const materialSelect = document.getElementById("materialSelect");
+    
     const setSim = document.getElementById("setSimButton");
     const toggleSim = document.getElementById("toggleSimButton");
 
+    const material_select = document.getElementById("material_select");
     const heater_temperature = document.getElementById("heater_temperature");
     const material_starting_temperature = document.getElementById("material_starting_temperature");
     const material_width = document.getElementById("material_width");
     const material_length = document.getElementById("material_length");
     const thermal_diffusivity = document.getElementById("thermal_diffusivity");
+    const heater_type = document.getElementById("heater_type");
 
     Object.keys(materialJSON.materials).forEach((m, i) => {
         const option = document.createElement("option");
         option.value = m;
         option.innerText = m.substring(0, 1).toUpperCase() + m.substring(1);
-        materialSelect.appendChild(option);
+        material_select.appendChild(option);
         if (i == 0) {
             thermal_diffusivity.value = materialJSON.materials[m].diffusivity;
         }
     });
 
-    materialSelect.onchange = () => {
-        thermal_diffusivity.value = materialJSON.materials[materialSelect.value].diffusivity;
+    material_select.onchange = () => {
+        thermal_diffusivity.value = materialJSON.materials[material_select.value].diffusivity;
     }
     
     setSim.onclick = () => {
@@ -59,10 +61,11 @@ export function controlsInit() {
             mst: parseFloat(material_starting_temperature.value), 
             w: parseFloat(material_width.value), 
             l: parseFloat(material_length.value), 
-            td: parseFloat(thermal_diffusivity.value)
+            td: parseFloat(thermal_diffusivity.value),
+            htype: heater_type.value
         };
         if (subject) {callE(controlsPause);}
-        subject = new Subject(result.w, result.l, result.td, result.mst, result.ht);
+        subject = new Subject(result.w, result.l, result.td, result.mst, result.ht, result.htype);
         callE(simulationFrameUpdate, {time: 0});
     });
     registerE(simulationEquilibrium, "setToggleButton", () => {
