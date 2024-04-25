@@ -26,8 +26,8 @@ export function graphInit() {
             const tRange = tEnd - tStart
             const pps = GRAPH.width / tRange;
             const ppd = GRAPH.height / subject.sim.heaterT;
-            
-            tempDisplay.value = tEnd;
+
+            tempDisplay.value = dataPoints[dataPoints.length - 1].v;
 
             // graph
             for (let i = 0; i < dataPoints.length - 1; i++) {

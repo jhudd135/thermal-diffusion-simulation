@@ -86,7 +86,6 @@ export class Sim {
                 callE(feaSimUpdate, {nTM: this.nTM.map(r => r.map(v => v)), time: this.time});
                 this.lastDataReport = this.time;
             }
-            
         }
     }
     get equilibrium() {
