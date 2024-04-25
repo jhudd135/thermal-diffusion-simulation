@@ -7,7 +7,8 @@ export class Sim {
     lnodes = 20;
     wnodes = 20;
     time = 0; // seconds
-    diff = 100; // default number larger than cutoff
+    d_temp = 100; // default number larger than cutoff
+    dd_temp = 100; // default number larger than cutoff
     dataResolution = 0.01; // seconds
     lastDataReport = 0; // seconds
     constructor(w, l, a, initT, heaterT, maxNodes, heaterType) { // w and l in cm
@@ -32,7 +33,7 @@ export class Sim {
             this.dx = this.width / this.wnodes; // mm
         }
         
-        this.dt = Math.min(this.dx * this.dx, this.dy * this.dy) / (4 * this.a); // seconds
+        this.dt = Math.min(Math.min(this.dx * this.dx, this.dy * this.dy) / (4 * this.a), 0.1); // seconds
 
         //initialize matrices
         this.nBM = [...Array(this.lnodes)].map(r => [...Array(this.wnodes)].map(v => false));
@@ -65,7 +66,7 @@ export class Sim {
     sim(t, finish = false) {
         const bG = Sim.boundGet;
         while ((this.time < t || finish) && !this.equilibrium) {
-            let diff = 0;
+            let d_temp = 0;
             const cp = this.nTM.map(r => r.map(v => v));
             for (let i = 0; i < cp.length; i++) {
                 for (let j = 0; j < cp[i].length; j++) {
@@ -77,10 +78,12 @@ export class Sim {
                     const dij = this.dt * this.a * (dd_x + dd_y);
                     this.nTM[i][j] = dij + cp[i][j];
 
-                    diff += dij;
+                    d_temp += Math.pow(this.heaterT - this.nTM[i][j], 2);
                 }
             }
-            this.diff = diff;
+            // this.dd_temp = Math.abs(this.d_temp - d_temp) / (this.a * this.dt);
+            // console.log(this.dd_temp);
+            this.d_temp = d_temp;
             this.time += this.dt;
             if (this.dataResolution < this.time - this.lastDataReport) {
                 callE(feaSimUpdate, {nTM: this.nTM.map(r => r.map(v => v)), time: this.time});
@@ -89,6 +92,6 @@ export class Sim {
         }
     }
     get equilibrium() {
-        return this.diff < 1;
+        return this.d_temp < 1;
     }
 }
