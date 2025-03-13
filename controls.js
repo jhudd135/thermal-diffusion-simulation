@@ -1,5 +1,5 @@
 import { Subject } from "./simulation.js";
-import materialJSON from "./materials.json" assert {type: "json"};
+
 import { callE, controlsPause, controlsPlay, controlsReset, registerE, simulationEquilibrium, simulationFrameUpdate } from "./events.js";
 
 export let subject;
@@ -19,20 +19,24 @@ export function controlsInit() {
     const thermal_diffusivity = document.getElementById("thermal_diffusivity");
     const heater_type = document.getElementById("heater_type");
 
-    Object.keys(materialJSON.materials).forEach((m, i) => {
-        const option = document.createElement("option");
-        option.value = m;
-        option.innerText = m.substring(0, 1).toUpperCase() + m.substring(1);
-        material_select.appendChild(option);
-        if (i == 0) {
-            thermal_diffusivity.value = materialJSON.materials[m].diffusivity;
+    fetch("./materials.json").then(res => {res.json().then(materialJSON => {
+        Object.keys(materialJSON.materials).forEach((m, i) => {
+            const option = document.createElement("option");
+            option.value = m;
+            option.innerText = m.substring(0, 1).toUpperCase() + m.substring(1);
+            material_select.appendChild(option);
+            if (i == 0) {
+                thermal_diffusivity.value = materialJSON.materials[m].diffusivity;
+            }
+        });
+    
+        material_select.onchange = () => {
+            thermal_diffusivity.value = materialJSON.materials[material_select.value].diffusivity;
         }
-    });
+    
+    })});
 
-    material_select.onchange = () => {
-        thermal_diffusivity.value = materialJSON.materials[material_select.value].diffusivity;
-    }
-
+    
     simulationSpeed.onchange = () => {
         callE(controlsPause);
     }

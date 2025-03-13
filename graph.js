@@ -61,6 +61,7 @@ export function graphInit() {
 
     registerE(controlsReset, "clearData", () => {
         dataPoints = [];
+        focusTile = null;
     });
 
     Canvas.CANVAS.canvas.onclick = () => {
