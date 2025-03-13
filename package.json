@@ -1,5 +1,5 @@
 {
-  "name": "engr-gizmo",
+  "name": "thermal-diffusion-simulation",
   "version": "0.1.0",
   "main": "index.js",
   "scripts": {
